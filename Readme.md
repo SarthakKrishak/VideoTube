@@ -1,4 +1,4 @@
-# YouTube-like Platform
+# VideoTube
 
 A modern, full-stack video sharing platform inspired by YouTube, built with Node.js backend and React frontend.
 
