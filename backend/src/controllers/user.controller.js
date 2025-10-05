@@ -14,7 +14,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     // Checking for existing user
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
             $or: [{ email }, { username }]
     })
 
@@ -29,6 +29,8 @@ const registerUser = asyncHandler(async (req, res) => {
     if (!avatarLocalPath) {
         throw new ApiError(400,"Avatar File is required")
     }
+    
+    console.log("Avatar local path:", avatarLocalPath);
 
     // Uploaded on cloudinary
     const avatar = await uploadOnCloudinary(avatarLocalPath);
