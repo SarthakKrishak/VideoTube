@@ -6,6 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 
 const registerUser = asyncHandler(async (req, res) => {
+    // Destructe the data from the req body
     const { fullName, email, username, password } = req.body;
     
     // Validation of the fields
@@ -13,7 +14,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "All Fields are required");
     }
 
-    // Checking for existing user
+    // Checking for existing user using both email and username
     const existedUser = await User.findOne({
             $or: [{ email }, { username }]
     })
@@ -22,7 +23,8 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(409, "User already exists");
     }
 
-    // Getting the avatar and coverImage path
+    // Getting the avatar and coverImage on local path (consolelog req.files for better understanding)
+    console.log(req.files);
     const avatarLocalPath = req.files?.avatar[0]?.path;
     const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
@@ -30,8 +32,6 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(400,"Avatar File is required")
     }
     
-    console.log("Avatar local path:", avatarLocalPath);
-
     // Uploaded on cloudinary
     const avatar = await uploadOnCloudinary(avatarLocalPath);
     const coverImage = await uploadOnCloudinary(coverImageLocalPath);
