@@ -50,7 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
         username: username.toLowerCase()
     })
 
-    // Again checking that is this user created also excluding the password and refreshtoken fields
+    // Again checking that is this user created also exclude the password and refreshtoken fields ( As we dont want to send the password and refresh token to the frontend )
    const userCreated = await User.findById(user._id).select("-password -refreshToken")
 
     if (!userCreated) {
